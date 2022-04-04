@@ -25,6 +25,9 @@ jobs:
       run: npm i -g @angular/cli
     - name: instaling eslint package
       run: ng add @angular-eslint/schematics
+      
+    - name: converting ts lint packages to es lint
+      run: ng g @angular-eslint/schematics:convert-tslint-to-eslint --remove-tslint-if-no-more-tslint-targets --ignore-existing-tslint-config
     - name: running linting
       run: ng lint > lintlogs.txt
     - name: checking wether lint files
