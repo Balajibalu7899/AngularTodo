@@ -26,4 +26,6 @@ jobs:
     - name: instaling eslint package
       run: ng add @angular-eslint/schematics
     - name: running linting
-      run: ng lint 
+      run: ng lint > lintlogs.txt
+    - name: checking wether lint files
+      run: cat lintlogs.txt
