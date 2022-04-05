@@ -29,7 +29,5 @@ jobs:
     - name: building angular
       run: npm run build
     - name: chicking build
-      run: |
-         cd dest
-         ls
+      run: ls
       
