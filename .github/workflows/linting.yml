@@ -31,5 +31,7 @@ jobs:
     - name: chicking build
       run: ls
     - name: cd to dist
-      run: cd dist
+      run: |
+         cd dist
+         ls dist
       
