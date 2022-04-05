@@ -30,4 +30,6 @@ jobs:
       run: npm run build
     - name: chicking build
       run: ls
+    - name: cd to dist
+      run: cd dist
       
