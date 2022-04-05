@@ -19,13 +19,15 @@ jobs:
         cache: 'npm'
     - name: running ls
       run: ls
+    - name: checking package.json
+      run: cat package.json
     - run: npm ci
     - name: installing angular cli
       run: npm i -g @angular/cli
     - name: ninstalling npm 
       run: npm install
     - name: building angular
-      run: npm build
+      run: npm run build
     - name: chicking build
       run: |
          cd dest
