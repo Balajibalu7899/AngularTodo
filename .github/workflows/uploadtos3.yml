@@ -1,0 +1,31 @@
+name: Upload files to s3 bucket 
+
+on: 
+ workflow_dispatch:
+ 
+jobs:
+
+  UploadFiles:
+    name: Upload to Amazon S3
+    runs-on: ubuntu-latest
+   
+    steps:
+      
+    - uses: actions/checkout@v1
+    #  settining up aws credentials 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.CAP_AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.CAP_AWS_SECRET_KEY }}
+        
+        
+    # copying files to  s3 bucket
+    - name: copying files to s3 bucket
+      run: aws s3 cp testfile s3://balajibaludexter/ --recursive
+      
+  # In the above step myDirectory means which folder do u need to copy to s3 bucket 
+ 
+  
+  # you can also use below command for syncronusly copy files
+  # aws s3 sync . s3://my-s3-test-website-bucket
