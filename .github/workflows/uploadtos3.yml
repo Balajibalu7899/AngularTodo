@@ -18,6 +18,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.CAP_AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.CAP_AWS_SECRET_KEY }}
+        aws-region: us-east-1
         
         
     # copying files to  s3 bucket
