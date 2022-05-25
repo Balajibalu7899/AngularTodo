@@ -40,7 +40,9 @@ jobs:
 #      - name: check tidy
 #        run: tidy --version
      - name: convert md to html
-       run: pandoc ./testfile/lint.md -f markdown -t html -s -o input.html
+       run: |
+          ls
+          pandoc lint.md -f markdown -t html -s -o input.html
        
      - name:  running html to xml
        run: python .github/scripts/converthtmltoxml.py
