@@ -26,7 +26,7 @@ jobs:
        run: | 
           sudo apt update
           sudo apt install python3-pip
-          echo `${ pip3 --version }`
+          
           
      - name: checking 
        run: ls
@@ -34,9 +34,14 @@ jobs:
      - name: install pandoc 
        run: sudo apt install pandoc
        
-     - name: install tidy
-       run: sudo apt install tidy
+#      - name: install tidy
+#        run: sudo apt install tidy
        
-     - name: check tidy
-       run: tidy --version
+#      - name: check tidy
+#        run: tidy --version
+     - name: convert md to html
+       run: pandoc ./testfile/lint.md -f markdown -t html -s -o input.html
+       
+     - name:  running html to xml
+       run: python .github/scripts/converthtmltoxml.py
        
