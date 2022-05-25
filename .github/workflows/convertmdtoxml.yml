@@ -9,6 +9,7 @@ jobs:
  Install-Datadog-Agent:
    runs-on: ubuntu-latest
    steps:
+     - uses: actions/checkout@v2
      - name: Start the Datadog Agent locally
        run: ls
        
@@ -26,11 +27,7 @@ jobs:
        run: | 
           sudo apt update
           sudo apt install python3-pip
-          
-          
-     - name: checking 
-       run: ls
-       
+
      - name: install pandoc 
        run: sudo apt install pandoc
        
@@ -46,4 +43,7 @@ jobs:
        
      - name:  running html to xml
        run: python .github/scripts/converthtmltoxml.py
+       
+     - name: checking xml
+       run: cat Output.xml
        
