@@ -17,7 +17,11 @@ jobs:
 #        uses: actions/download-artifact@v1
 #        with:
 #           name: unit-test-results
-          
+     - uses: actions/setup-python@v3
+       with:
+          python-version: '3.x' 
+          architecture: 'x64'
+#      - run: python my_script.py     
      - name: checking 
        run: ls
        
