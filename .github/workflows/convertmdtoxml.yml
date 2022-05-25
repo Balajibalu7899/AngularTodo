@@ -21,7 +21,13 @@ jobs:
        with:
           python-version: '3.x' 
           architecture: 'x64'
-#      - run: python my_script.py     
+#      - run: python my_script.py  
+     - name: setting up pip
+       run: | 
+          sudo apt update
+          sudo apt install python3-pip
+          pip3 --version
+          
      - name: checking 
        run: ls
        
