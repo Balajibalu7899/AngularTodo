@@ -1,0 +1,32 @@
+name: Datadog Pipeline
+
+on:
+  workflow_dispatch:
+  
+
+jobs:
+
+ Install-Datadog-Agent:
+   runs-on: ubuntu-latest
+   steps:
+     - name: Start the Datadog Agent locally
+       run: ls
+       
+#      - name: Download Build Artifact
+#        if: ${{ always() }}
+#        uses: actions/download-artifact@v1
+#        with:
+#           name: unit-test-results
+          
+     - name: checking 
+       run: ls
+       
+     - name: install pandoc 
+       run: sudo apt install pandoc
+       
+     - name: install tidy
+       run: sudo apt install tidy
+       
+     - name: check tidy
+       run: tidy --version
+       
