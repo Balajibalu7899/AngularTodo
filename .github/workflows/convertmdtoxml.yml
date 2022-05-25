@@ -42,6 +42,9 @@ jobs:
           pandoc lint.md -f markdown -t html -s -o input.html
           cat input.html
           python -m pip install jpype1
+          python -m pip install Workbook
+          python -m pip install asposecells
+          
        
      - name:  running html to xml
        run: python .github/scripts/converthtmltoxml.py
