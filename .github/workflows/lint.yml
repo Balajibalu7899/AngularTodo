@@ -21,7 +21,7 @@ jobs:
     - name: installing angular cli
       run: npm i -g @angular/cli
     - name: branch nalmel
-      run:
+      run: |
         echo "${GITHUB_HEAD_REF}"
         git rev-parse --abbrev-ref HEAD
         
