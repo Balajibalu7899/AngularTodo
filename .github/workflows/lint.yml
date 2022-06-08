@@ -15,7 +15,6 @@ jobs:
     
     - name: branch nalmel
       run: |
-        echo  ${GITHUB_REF}
         echo  ${GITHUB_REF_NAME}
         
         
