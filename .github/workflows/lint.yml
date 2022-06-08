@@ -15,7 +15,8 @@ jobs:
     
     - name: branch nalmel
       run: |
-        echo "branch is ${github.ref}"
+        echo  ${GITHUB_REF}
+        echo  ${GITHUB_REF_NAME}
         
         
     - run: echo "brancjh id ${GITHUB_REF}"
