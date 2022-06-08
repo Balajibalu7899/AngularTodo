@@ -22,7 +22,8 @@ jobs:
       run: npm i -g @angular/cli
     - name: branch nalmel
       run: |
-        echo "${GITHUB_HEAD_REF}"
-        git rev-parse --abbrev-ref HEAD
+        echo ${GITHUB_HEAD_REF}
+        
         
     - run: echo "brancjh id ${GITHUB_REF}"
+    - run: git rev-parse --abbrev-ref HEAD
