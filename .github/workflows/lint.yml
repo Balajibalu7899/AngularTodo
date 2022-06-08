@@ -24,4 +24,4 @@ jobs:
       run:
         echo ${GITHUB_HEAD_REF}
         
-    - run: echo "brancjh id ${GITHUB_REF##*/}"
+    - run: echo "brancjh id ${GITHUB_REF}"
