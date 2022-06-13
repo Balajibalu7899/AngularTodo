@@ -25,4 +25,4 @@ jobs:
       run: jf --version
       
     - name: xray scanning
-      run: jf s "./src" --watches "watch1"
+      run: jf xr curl -XGET /api/v1/system/version
