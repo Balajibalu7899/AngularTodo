@@ -30,7 +30,7 @@ jobs:
      #  jf c add --url=https://mcd.jfrog.io/artifactory --access-token=${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}}   
     - name: xray scanning
       run: | 
-       jf xr s "./src" --watches "watch1"
+       jf s "./src" --watches "watch1"
       
 #   Push-Binary-To_Artifactory:
 #       needs: [ Generate-Version-ID, Publish-Binary-Zip, Metadata ]
