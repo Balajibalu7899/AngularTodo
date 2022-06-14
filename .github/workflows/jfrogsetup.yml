@@ -25,7 +25,7 @@ jobs:
     
     - name: configure jfrog with Artifactory
       run: |
-         jf c add --url=https://likemindz.jfrog.io/artifactory --access-token=${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}}
+         jf c add --url=https://likemindz.jfrog.io/artifactory --access-token=${{secrets.JFROG_KEY}}
         
      #  jf c add --url=https://mcd.jfrog.io/artifactory --access-token=${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}}   
     - name: xray scanning
