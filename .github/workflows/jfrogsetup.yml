@@ -1,14 +1,13 @@
-name: Setup JFrog CI
+name: Build Pipeline Dotnet
 
 on:
   workflow_dispatch:
+ 
 
 jobs:
-  Linting:
 
+  InstallingJFrog:
     runs-on: ubuntu-latest
-
-       
 
     steps:
     - uses: actions/checkout@v3
@@ -17,9 +16,62 @@ jobs:
       run: |
         wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add -
         echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list;
-        apt update;
-        apt install -y jfrog-cli-v2-jf;
+        sudo apt update;
+        sudo apt install -y jfrog-cli-v2-jf;
         
         
     - name: checking jfrog cli version
       run: jf --version
+    
+    - name: configure jfrog with Artifactory
+      run: |
+         jf c add --url=https://likemindz.jfrog.io/artifactory --access-token=${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}}
+        
+     #  jf c add --url=https://mcd.jfrog.io/artifactory --access-token=${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}}   
+    - name: xray scanning
+      run: | 
+       jf xr s "./src" --watches "watch1"
+      
+#   Push-Binary-To_Artifactory:
+#       needs: [ Generate-Version-ID, Publish-Binary-Zip, Metadata ]
+#       runs-on: [ self-hosted, windows, pos2 ]
+#       env:
+#         POS2_SAAS_ART_BINARY_REPO: https://mcd.jfrog.io/artifactory/pos2-binary
+#       outputs:
+#         checksum-md5: ${{ steps.getchecksummd5.outputs.checksum-md5 }}
+#         checksum-sha1: ${{ steps.getchecksumsha1.outputs.checksum-sha1 }}
+
+#       steps:
+#       - name: Retrieve Zip
+#         uses: actions/download-artifact@v2
+#         with: 
+#           name: ${{needs.Publish-Binary-Zip.outputs.buildName}}
+#           path: ${{needs.Publish-Binary-Zip.outputs.buildName}}
+          
+           
+#       - name: Zip published app
+#         run: Compress-Archive -Force ${{needs.Publish-Binary-Zip.outputs.buildName}}/* ${{needs.Publish-Binary-Zip.outputs.buildName}}.zip 
+#         shell: powershell
+      
+#       - name: Get Checksum MD5
+#         id: getchecksummd5
+#         run: |
+#           $CHECK_SUM_MD5 = (Get-FileHash ./${{needs.Publish-Binary-Zip.outputs.buildName}}.zip -Algorithm MD5).hash.tolower()
+#           echo "::set-output name=checksum-md5::$CHECK_SUM_MD5"          
+
+#       - name: Get Checksum SHA1
+#         id: getchecksumsha1
+#         run: |
+#           $CHECK_SUM_SHA1 = (Get-FileHash ./${{needs.Publish-Binary-Zip.outputs.buildName}}.zip -Algorithm SHA1).hash.tolower()
+#           echo "::set-output name=checksum-sha1::$CHECK_SUM_SHA1"          
+
+#       - name: Display Checksums
+#         run: |
+#           echo "MD5: ${{steps.getchecksummd5.outputs.checksum-md5}}"
+#           echo "SHA1: ${{steps.getchecksumsha1.outputs.checksum-sha1}}"
+          
+
+#       - name: Push Artifactory
+#         run: curl.exe -u ${{secrets.POS2_ART_SAAS_DEV_USERNAME}}:${{secrets.POS2_ART_SAAS_DEV_ACCESS_TOKEN}} -X PUT --header "X-Checksum-MD5:${{steps.getchecksummd5.outputs.checksum-md5}}" --header "X-Checksum-Sha1:${{steps.getchecksumsha1.outputs.checksum-sha1}}" "${{env.POS2_SAAS_ART_BINARY_REPO}}/${{needs.Metadata.outputs.repoName}}/${{needs.Publish-Binary-Zip.outputs.buildName}}.zip" -T ./${{needs.Publish-Binary-Zip.outputs.buildName}}.zip
+
+  
