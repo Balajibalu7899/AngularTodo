@@ -27,7 +27,7 @@ jobs:
       run: |
         ls
         pwd
-        aws s3 cp ./index.html s3://balajibaludexter/ --recursive
+        aws s3 cp ../index.html s3://balajibaludexter/ --recursive
       
   # In the above step myDirectory means which folder do u need to copy to s3 bucket 
  
