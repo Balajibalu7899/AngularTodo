@@ -23,7 +23,7 @@ jobs:
         
     # copying files to  s3 bucket
     - name: copying files to s3 bucket
-      run: aws s3 cp testfile s3://balajibaludexter/ --recursive
+      run: aws s3 cp testfile/index.html s3://balajibaludexter/ --recursive
       
   # In the above step myDirectory means which folder do u need to copy to s3 bucket 
  
