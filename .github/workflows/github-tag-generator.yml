@@ -24,6 +24,6 @@ jobs:
    Check-version:
     needs: Generate-Version-ID
     runs-on: ubuntu-latest
-    tasks:
+    steps:
       - name: Get Version ID
         run: echo "${{needs.Generate-Version-ID.outputs.versionID}}"    
