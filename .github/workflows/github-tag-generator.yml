@@ -1,0 +1,29 @@
+name: Build Pipeline Angular
+
+on:
+  workflow_dispatch:
+
+jobs:
+   Generate-Version-ID:
+    runs-on: ubuntu-latest
+    outputs:
+      versionID: ${{ steps.GetNextTag.outputs.new_tag }}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: get next tag
+      id: GetNextTag
+      uses: ./.github/actions/github-tag-action
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DRY_RUN: true
+        
+        
+   Check-version:
+    needs: Generate-Version-ID
+    runs-on: ubuntu-latest
+    tasks:
+      - name: Get Version ID
+        run: echo "${{needs.Generate-Version-ID.outputs.versionID}}"    
