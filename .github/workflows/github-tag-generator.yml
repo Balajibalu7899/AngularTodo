@@ -1,4 +1,4 @@
-name: Build Pipeline Angular
+name: Github Tag Generator
 
 on:
   workflow_dispatch:
@@ -19,11 +19,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         DRY_RUN: true
-        
-        
+            
    Check-version:
     needs: Generate-Version-ID
     runs-on: ubuntu-latest
     steps:
-      - name: Get Version ID
+      - name:  Version ID is
         run: echo "${{needs.Generate-Version-ID.outputs.versionID}}"    
