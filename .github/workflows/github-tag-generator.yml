@@ -1,9 +1,24 @@
-name: Github Tag Generator
+name: Build
 
 on:
   workflow_dispatch:
 
 jobs:
+   Meta-data:
+     runs-on: ubuntu-latest
+     outputs:
+      repoName: ${{ steps.repoName.outputs.repoName }}
+      branchName: ${{ steps.branchName.outputs.branchName }}
+     steps:
+     - uses: actions/checkout@v3
+     - name: Get Repo Name
+       id: repoName
+       run: echo "::set-output name=repoName::${GITHUB_REPOSITORY#*/}"
+
+     - name: Get Branch Name
+       id: branchName
+       run: echo "##[set-output name=branchName;]$(echo ${GITHUB_REF#refs/heads/})" 
+
    Generate-Version-ID:
     runs-on: ubuntu-latest
     outputs:
@@ -19,7 +34,27 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         DRY_RUN: true
-            
+        
+   Build-Angular:
+     needs: Generate-Version-ID
+     runs-on: ubuntu-latest
+     steps:
+       - name: Install Angular
+         uses: actions/setup-node@v2
+         
+       - name: Setup & Run Angular
+         run: |
+           npm cache clear --force
+           npm install
+           npm install -g @angular/cli
+           ng build
+           ls
+       - name: Zip Dist Files
+         run: |
+           zip -rq ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}.zip dist
+           ls 
+         
+           
    Check-version:
     needs: Generate-Version-ID
     runs-on: ubuntu-latest
