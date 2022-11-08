@@ -36,7 +36,7 @@ jobs:
         DRY_RUN: true
         
    Build-Angular:
-     needs: Generate-Version-ID
+     needs: [Meta-data,Generate-Version-ID]
      runs-on: ubuntu-latest
      steps:
        - name: Install Angular
@@ -53,11 +53,9 @@ jobs:
          run: |
            zip -rq ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}.zip dist
            ls 
-         
-           
-   Check-version:
-    needs: Generate-Version-ID
-    runs-on: ubuntu-latest
-    steps:
-      - name:  Version ID is
-        run: echo "${{needs.Generate-Version-ID.outputs.versionID}}"    
+       - name: Store Source
+         uses: actions/upload-artifact@v3
+         with:
+          name: ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}
+          path: ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}.zip
+          if-no-files-found: error  
