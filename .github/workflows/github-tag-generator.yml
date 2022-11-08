@@ -1,10 +1,26 @@
-name: Github Tag Generator
+name: Build
 
 on:
   workflow_dispatch:
 
 jobs:
+   Metadata:
+     runs-on: ubuntu-latest
+     outputs:
+      repoName: ${{ steps.repoName.outputs.repoName }}
+      branchName: ${{ steps.branchName.outputs.branchName }}
+     steps:
+     - uses: actions/checkout@v3
+     - name: Get Repo Name
+       id: repoName
+       run: echo "::set-output name=repoName::${GITHUB_REPOSITORY#*/}"
+
+     - name: Get Branch Name
+       id: branchName
+       run: echo "##[set-output name=branchName;]$(echo ${GITHUB_REF#refs/heads/})" 
+
    Generate-Version-ID:
+    needs: Metadata
     runs-on: ubuntu-latest
     outputs:
       versionID: ${{ steps.GetNextTag.outputs.new_tag }}
@@ -19,10 +35,29 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
         DRY_RUN: true
-            
-   Check-version:
-    needs: Generate-Version-ID
-    runs-on: ubuntu-latest
-    steps:
-      - name:  Version ID is
-        run: echo "${{needs.Generate-Version-ID.outputs.versionID}}"    
+        
+   Build-Angular:
+     needs: [Metadata,Generate-Version-ID]
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: Install Angular
+         uses: actions/setup-node@v2
+         
+       - name: Setup & Run Angular
+         run: |
+           npm cache clear --force
+           npm install
+           npm install -g @angular/cli
+           ng build
+           ls
+       - name: Zip Dist Files
+         run: |
+           zip -rq ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}.zip dist
+           ls 
+       - name: Store Source
+         uses: actions/upload-artifact@v3
+         with:
+          name: ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}
+          path: ${{needs.Metadata.outputs.repoName}}_${{needs.Generate-Version-ID.outputs.versionID}}.zip
+          if-no-files-found: error  
