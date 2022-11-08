@@ -20,6 +20,7 @@ jobs:
        run: echo "##[set-output name=branchName;]$(echo ${GITHUB_REF#refs/heads/})" 
 
    Generate-Version-ID:
+    needs: Meta-data
     runs-on: ubuntu-latest
     outputs:
       versionID: ${{ steps.GetNextTag.outputs.new_tag }}
@@ -39,6 +40,7 @@ jobs:
      needs: [Meta-data,Generate-Version-ID]
      runs-on: ubuntu-latest
      steps:
+       - uses: actions/checkout@v3
        - name: Install Angular
          uses: actions/setup-node@v2
          
