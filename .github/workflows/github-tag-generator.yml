@@ -1,4 +1,4 @@
-name: Build
+name: Build & Package
 
 on:
   workflow_dispatch:
@@ -18,7 +18,28 @@ jobs:
      - name: Get Branch Name
        id: branchName
        run: echo "##[set-output name=branchName;]$(echo ${GITHUB_REF#refs/heads/})" 
-
+       
+   Business-Logic-Checks: 
+     needs: Metadata
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v2
+       
+       - name: Check for package-lock json file
+         if: ${{ always() }}
+         run: |
+           if [ ! -f package-lock.json ]; then
+            echo 'package-lock.json file does not exist'
+            exit 1
+           fi
+       - name: Check for angular.json file
+         if: ${{ always() }}
+         run: |
+           if [ ! -f angular.json ]; then
+            echo 'angular.json file does not exist'
+            exit 1
+           fi   
+           
    Generate-Version-ID:
     needs: Metadata
     runs-on: ubuntu-latest
