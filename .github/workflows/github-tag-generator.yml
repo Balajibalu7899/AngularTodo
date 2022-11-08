@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-   Meta-data:
+   Metadata:
      runs-on: ubuntu-latest
      outputs:
       repoName: ${{ steps.repoName.outputs.repoName }}
@@ -20,7 +20,7 @@ jobs:
        run: echo "##[set-output name=branchName;]$(echo ${GITHUB_REF#refs/heads/})" 
 
    Generate-Version-ID:
-    needs: Meta-data
+    needs: Metadata
     runs-on: ubuntu-latest
     outputs:
       versionID: ${{ steps.GetNextTag.outputs.new_tag }}
@@ -37,7 +37,7 @@ jobs:
         DRY_RUN: true
         
    Build-Angular:
-     needs: [Meta-data,Generate-Version-ID]
+     needs: [Metadata,Generate-Version-ID]
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
